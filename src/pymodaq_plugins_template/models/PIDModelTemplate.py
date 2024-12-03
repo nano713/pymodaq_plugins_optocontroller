@@ -1,7 +1,10 @@
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
-
+from pymodaq_plugins_thorlabs.daq_move_plugins.daq_move_KDC101 import DAQ_Move_KDC101
+import sys
+import os 
+sys.path.append
 
 def some_function_to_convert_the_pid_outputs(outputs: List[float], dt: float, stab=True):
     """ Should be replaced here or in the model class to process the outputs """
@@ -24,10 +27,10 @@ class PIDModelTemplate(PIDModelGeneric):
     setpoint_ini = [128, 128]  # number and values of initial setpoints
     setpoints_names = ['Xaxis', 'Yaxis']  # number and names of setpoints
 
-    actuators_name = ["Xpiezo", "Ypiezo"]  # names of actuator's control modules involved in the PID
-    detectors_name = ['Camera']  # names of detector's control modules involved in the PID
+    actuators_name = ["X-KDC"]  # names of actuator's control modules involved in the PID
+    detectors_name = ['PowerMeter']  # names of detector's control modules involved in the PID
 
-    params = []  # list of dict to initialize specific Parameters
+    params = [{'title': 'Target Power', 'name': 'power', 'type': 'float', 'value': 0.01}] 
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
