@@ -3,9 +3,7 @@ from pymodaq.utils.data import DataToExport
 from typing import List
 from pymodaq_plugins_thorlabs.daq_move_plugins.daq_move_KDC101 import DAQ_Move_KDC101
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
-import sys
-import os 
-sys.path.append
+
 
 def some_function_to_convert_the_pid_outputs(outputs: List[float], dt: float, stab=True):
     """ Should be replaced here or in the model class to process the outputs """
@@ -31,7 +29,8 @@ class PIDModelTemplate(PIDModelGeneric):
     actuators_name = ["X-KDC"]  # names of actuator's control modules involved in the PID
     detectors_name = ['PowerMeter']  # names of detector's control modules involved in the PID
 
-    params = [{'title': 'Target Power', 'name': 'power', 'type': 'float', 'value': 0.01}] 
+    params = [{'title': 'Target Power', 'name': 'power', 'type': 'float', 'value': 0.01}, 
+              {'title': 'Wavelength', 'name': 'wavelength', 'type': 'float', 'value': 0.001}] 
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
