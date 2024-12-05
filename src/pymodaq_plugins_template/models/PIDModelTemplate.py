@@ -2,6 +2,7 @@ from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, Inpu
 from pymodaq.utils.data import DataToExport
 from typing import List
 from pymodaq_plugins_thorlabs.daq_move_plugins.daq_move_KDC101 import DAQ_Move_KDC101
+from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
 import sys
 import os 
 sys.path.append
