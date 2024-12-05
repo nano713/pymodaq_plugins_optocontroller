@@ -1,8 +1,8 @@
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
-from pymodaq_plugins_thorlabs.daq_move_plugins.daq_move_KDC101 import DAQ_Move_KDC101
-from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
+from pymodaq_plugins_thorlabs.daq_move_plugins.daq_move_KDC101 import DAQ_Move_KDC101 as KDC101
+from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter as PM100D
 
 
 def some_function_to_convert_the_pid_outputs(outputs: List[float], dt: float, stab=True):
@@ -42,8 +42,10 @@ class PIDModelTemplate(PIDModelGeneric):
         ----------
         param: (Parameter) instance of Parameter object
         """
-        if param.name() == '':
-            pass
+        if param.name() == 'power':
+            self.settings['power'] = param.value()
+        if param.name() == 'wavelegth':
+            self.settings['wavelength'] = param.value()
 
     def ini_model(self):
         super().ini_model()
