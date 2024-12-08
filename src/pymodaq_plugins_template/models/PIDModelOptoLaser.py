@@ -86,8 +86,9 @@ class PIDModelTemplate(PIDModelGeneric):
         OutputToActuator: the converted output
 
         """
-        outputs = power_covert_to_position(outputs, dt, stab)
-        return OutputToActuator(mode='rel', values=outputs)
+        # outputs = power_covert_to_position(outputs, dt, stab)
+        # return OutputToActuator(mode='rel', values=outputs)
+        pass 
 
 
 if __name__ == '__main__':
