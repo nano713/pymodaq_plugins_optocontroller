@@ -1,12 +1,10 @@
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
-from pymodaq_plugins_thorlabs.daq_move_plugins.daq_move_KDC101 import DAQ_Move_KDC101 as KDC101
-from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter as PM100D
 
-
-def some_function_to_convert_the_pid_outputs(outputs: List[float], dt: float, stab=True):
+def power_covert_to_position(outputs: List[float], dt: float, stab=True):
     """ Should be replaced here or in the model class to process the outputs """
+    #TODO: No simple way to do this
     return outputs
 
 
@@ -34,6 +32,7 @@ class PIDModelTemplate(PIDModelGeneric):
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
+        self.power = 0
 
     def update_settings(self, param):
         """
@@ -65,9 +64,11 @@ class PIDModelTemplate(PIDModelGeneric):
         InputFromDetector: the converted input in the setpoints units
 
         """
-
-        x, y = some_function_to_convert_the_data(measurements)
-        return InputFromDetector([y, x])
+        power = measurements.get_data_from_dim('PowerMeter')[0][0]
+        power = power - self.settings['power']
+        self.power = power
+        #x, y = some_function_to_convert_the_data(measurements)
+        return InputFromDetector(values=[power])
 
     def convert_output(self, outputs: List[float], dt: float, stab=True):
         """
@@ -85,7 +86,7 @@ class PIDModelTemplate(PIDModelGeneric):
         OutputToActuator: the converted output
 
         """
-        outputs = some_function_to_convert_the_pid_outputs(outputs, dt, stab)
+        outputs = power_covert_to_position(outputs, dt, stab)
         return OutputToActuator(mode='rel', values=outputs)
 
 
