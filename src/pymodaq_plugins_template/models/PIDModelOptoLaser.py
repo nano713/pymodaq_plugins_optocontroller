@@ -1,8 +1,13 @@
 # DK - modules in the first line are obsolete. Import classes used in PIDModelGeneric -> https://github.com/PyMoDAQ/PyMoDAQ/blob/6daca234d2ba46a09f1ccebc9e982cb1b029d9ee/src/pymodaq/extensions/pid/utils.py#L32
 # AD -> don't need to import since the class inherits from PIDModelGeneric
-from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
-from pymodaq.utils.data import DataToExport
 from typing import List
+
+import numpy as np
+
+from pymodaq_data.data import DataToExport, DataCalculated
+
+from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, main
+from pymodaq.utils.data import DataActuator
 
 
 
@@ -95,10 +100,8 @@ class PIDModelOptoLaser(PIDModelGeneric):
         OutputToActuator: the converted output
 
         """
-        # outputs = power_covert_to_position(outputs, dt, stab)
-        # return OutputToActuator(mode='rel', values=outputs)
-        #  DK restore return. Return in DataToActuators object.
-        pass 
+        self.curr_output = outputs
+        return DataToActuatorPID(values=outputs)
 
 
 if __name__ == '__main__':
