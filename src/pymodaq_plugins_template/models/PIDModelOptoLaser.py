@@ -77,7 +77,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
         power = power - self.settings['power']
         self.power = power
         #x, y = some_function_to_convert_the_data(measurements)
-        return InputFromDetector(values=[power]) # DK - return in DataToExport object
+        return DataToExport(values=[power])
 
     def convert_output(self, outputs: List[float], dt: float, stab=True):
         """
