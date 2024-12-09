@@ -3,21 +3,23 @@ from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, Inpu
 from pymodaq.utils.data import DataToExport
 from typing import List
 
+
+
 # DK - comment out
-def power_covert_to_position(outputs: List[float], dt: float, stab=True):
-    """ Should be replaced here or in the model class to process the outputs """
-    #TODO: No simple way to do this
-    return outputs
+# def power_covert_to_position(outputs: List[float], dt: float, stab=True):
+#     """ Should be replaced here or in the model class to process the outputs """
+#     #TODO: No simple way to do this
+#     return outputs
 
 # Dk - Comment out
-def some_function_to_convert_the_data(measurements: DataToExport):
-    """ Should be replaced here or in the model class to process the measurement """
-    a = 0
-    b = 1
-    return [a, b]
+# def some_function_to_convert_the_data(measurements: DataToExport):
+#     """ Should be replaced here or in the model class to process the measurement """
+#     a = 0
+#     b = 1
+#     return [a, b]
 
 # Rename PIDModelTemplate
-class PIDModelTemplate(PIDModelGeneric):
+class PIDModelOptoLaser(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
                   min=dict(state=False, value=-100),)
     konstants = dict(kp=0.1, ki=0.000, kd=0.0000)
