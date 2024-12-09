@@ -1,4 +1,5 @@
 # DK - modules in the first line are obsolete. Import classes used in PIDModelGeneric -> https://github.com/PyMoDAQ/PyMoDAQ/blob/6daca234d2ba46a09f1ccebc9e982cb1b029d9ee/src/pymodaq/extensions/pid/utils.py#L32
+# AD -> don't need to import since the class inherits from PIDModelGeneric
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
@@ -51,7 +52,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
         """
         if param.name() == 'power':
             self.settings['power'] = param.value()
-        if param.name() == 'wavelegth': # DK - correct typo
+        if param.name() == 'wavelength': # DK - correct typo
             self.settings['wavelength'] = param.value()
 
     def ini_model(self):
@@ -102,4 +103,4 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
 if __name__ == '__main__':
     # DK - rename .xml file although we have not created this xml yet.
-    main("BeamSteeringMockNoModel.xml")  # some preset configured with the right actuators and detectors
+    main("OptoControllerModel.xml")  # some preset configured with the right actuators and detectors
