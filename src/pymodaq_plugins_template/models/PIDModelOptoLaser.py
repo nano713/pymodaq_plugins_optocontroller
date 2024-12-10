@@ -79,8 +79,6 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
         """
         power = measurements.get_data_from_dim('PowerMeter')[0][0]
-        power = power - self.settings['power']
-        self.power = power
         #x, y = some_function_to_convert_the_data(measurements)
         return DataToExport(values=[power])
 
