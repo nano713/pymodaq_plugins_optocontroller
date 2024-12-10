@@ -30,19 +30,15 @@ class PIDModelOptoLaser(PIDModelGeneric):
                   min=dict(state=False, value=-100),)
     konstants = dict(kp=0.1, ki=0.000, kd=0.0000)
 
-    # DK - Nsetpoints = 1 because we move only one axis
-    Nsetpoints = 2  # number of setpoints
-    # DK - [xxx] one element
-    setpoint_ini = [128, 128]  # number and values of initial setpoints
-    # DK - ["xxx"] one element
-    setpoints_names = ['Xaxis', 'Yaxis']  # number and names of setpoints
+    Nsetpoints = 1  # number of setpoints
+    setpoint_ini = [128]  # number and values of initial setpoints
+    setpoints_names = ['power']  # number and names of setpoints
 
     actuators_name = ["X-KDC"]  # names of actuator's control modules involved in the PID
     detectors_name = ['PowerMeter']  # names of detector's control modules involved in the PID
 
     # Target Power will be set in setpoint. Delete this dictionary. We only need wavelength at this moment.
-    params = [{'title': 'Target Power', 'name': 'power', 'type': 'float', 'value': 0.01}, 
-              {'title': 'Wavelength', 'name': 'wavelength', 'type': 'float', 'value': 0.001}] 
+    params = [ {'title': 'Wavelength', 'name': 'wavelength', 'type': 'float', 'value': 0.001}] 
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
