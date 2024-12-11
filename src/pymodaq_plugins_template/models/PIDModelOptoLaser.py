@@ -60,7 +60,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
         Returns
         -------
-        InputFromDetector: the converted input in the setpoints units
+        DataToExport: the converted input in the setpoints units
 
         """
         power = measurements.get_data_from_dim('PowerMeter')[0][0]
@@ -82,7 +82,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
         Returns
         -------
-        OutputToActuator: the converted output
+        DataToActuatorPID: the converted output
 
         """
         self.curr_output = outputs
