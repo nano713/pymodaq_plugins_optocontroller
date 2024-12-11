@@ -1,11 +1,8 @@
 # DK - modules in the first line are obsolete. Import classes used in PIDModelGeneric -> https://github.com/PyMoDAQ/PyMoDAQ/blob/6daca234d2ba46a09f1ccebc9e982cb1b029d9ee/src/pymodaq/extensions/pid/utils.py#L32
 # AD -> don't need to import since the class inherits from PIDModelGeneric
 from typing import List
-
 import numpy as np
-
 from pymodaq_data.data import DataToExport, DataCalculated
-
 from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, main
 from pymodaq.utils.data import DataActuator
 
@@ -22,7 +19,6 @@ from pymodaq.utils.data import DataActuator
 #     b = 1
 #     return [a, b]
 
-# Rename PIDModelTemplate
 class PIDModelOptoLaser(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
                   min=dict(state=False, value=-100),)
@@ -49,8 +45,6 @@ class PIDModelOptoLaser(PIDModelGeneric):
         ----------
         param: (Parameter) instance of Parameter object
         """
-        if param.name() == 'power':
-            self.settings['power'] = param.value()
         if param.name() == 'wavelength': # DK - correct typo
             self.settings['wavelength'] = param.value()
 
