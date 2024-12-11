@@ -10,8 +10,6 @@ from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, mai
 from pymodaq.utils.data import DataActuator
 
 
-
-# DK - comment out
 # def power_covert_to_position(outputs: List[float], dt: float, stab=True):
 #     """ Should be replaced here or in the model class to process the outputs """
 #     #TODO: No simple way to do this
@@ -34,7 +32,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
     setpoint_ini = [128]  # number and values of initial setpoints
     setpoints_names = ['power']  # number and names of setpoints
 
-    actuators_name = ["X-KDC"]  # names of actuator's control modules involved in the PID
+    actuators_name = ['X-KDC']  # names of actuator's control modules involved in the PID
     detectors_name = ['PowerMeter']  # names of detector's control modules involved in the PID
 
     # Target Power will be set in setpoint. Delete this dictionary. We only need wavelength at this moment.
@@ -58,8 +56,6 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
     def ini_model(self):
         super().ini_model()
-
-        # add here other specifics initialization if needed
 
     def convert_input(self, measurements: DataToExport):
         """
@@ -99,5 +95,4 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
 
 if __name__ == '__main__':
-    # DK - rename .xml file although we have not created this xml yet.
-    main("OptoControllerModel.xml")  # some preset configured with the right actuators and detectors
+    main("OptoControllerModel.xml") 
