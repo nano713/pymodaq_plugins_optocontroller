@@ -64,7 +64,6 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
         """
         power = measurements.get_data_from_dim('PowerMeter')[0][0]
-        #x, y = some_function_to_convert_the_data(measurements)
         return DataToExport(values=[power])
 
     def convert_output(self, outputs: List[float], dt: float, stab=True):
