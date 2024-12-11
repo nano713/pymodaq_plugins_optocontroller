@@ -86,8 +86,9 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
         """
         self.curr_output = outputs
-        return DataToActuatorPID(values=outputs)
-
+        return DataToActuatorPID('pid', mode='rel',
+                         data=[DataActuator(self.actuators_name[ind], data=[self.curr_output[ind]])
+                               for ind in range(len(self.curr_output))])
 
 if __name__ == '__main__':
     main("OptoControllerModel.xml") 
