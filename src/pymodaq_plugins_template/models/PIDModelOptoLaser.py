@@ -2,9 +2,8 @@
 # AD -> don't need to import since the class inherits from PIDModelGeneric
 from typing import List
 import numpy as np
-from pymodaq_data.data import DataToExport, DataCalculated
 from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, main
-from pymodaq.utils.data import DataActuator
+from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated
 
 
 # def power_covert_to_position(outputs: List[float], dt: float, stab=True):
