@@ -92,6 +92,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
         DataToActuatorPID: the converted output
 
         """
+        # DK - Fix. The actuator value in the GUI does not match the actuator value in physical instrument
         self.curr_output = np.array(outputs)
         return DataToActuatorPID('pid', mode='rel',
                          data=[DataActuator(self.actuators_name[ind], data=[self.curr_output])
