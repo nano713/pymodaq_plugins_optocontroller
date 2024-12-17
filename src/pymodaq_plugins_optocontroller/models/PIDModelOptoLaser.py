@@ -2,7 +2,7 @@
 # AD -> don't need to import since the class inherits from PIDModelGeneric
 from typing import List
 import numpy as np
-from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, main
+from pymodaq.extensions.pid.utils import PIDModelGeneric, main
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 
 import logging
@@ -47,7 +47,7 @@ class PIDModelOptoLaser(PIDModelGeneric):
         param: (Parameter) instance of Parameter object
         """
         if param.name() == 'wavelength': # DK - correct typo
-            self.settings['wavelength'] = param.value()
+            self.settings['wavelength'] = param.value() # DK - the wavelength setting in the powermeter was not updated.
 
     def ini_model(self):
         super().ini_model()
@@ -89,14 +89,15 @@ class PIDModelOptoLaser(PIDModelGeneric):
 
         Returns
         -------
-        DataToActuatorPID: the converted output
+        DataToActuators: the converted output
 
         """
         # DK - Fix. The actuator value in the GUI does not match the actuator value in physical instrument
         self.curr_output = np.array(outputs)
-        return DataToActuatorPID('pid', mode='rel',
+        return DataToActuators('pid', mode='rel',
                          data=[DataActuator(self.actuators_name[ind], data=[self.curr_output])
                                for ind in range(len(self.curr_output))])
+
 
 if __name__ == '__main__':
     # main("OptoControllerModel.xml")
