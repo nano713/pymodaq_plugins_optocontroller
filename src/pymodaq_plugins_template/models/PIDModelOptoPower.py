@@ -18,7 +18,7 @@ from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated
 #     b = 1
 #     return [a, b]
 
-class PIDModelOptoLaser(PIDModelGeneric):
+class PIDModelOptoPower(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
                   min=dict(state=False, value=-100),)
     konstants = dict(kp=0.1, ki=0.000, kd=0.0000)
