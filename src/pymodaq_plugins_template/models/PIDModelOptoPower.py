@@ -4,6 +4,7 @@ from typing import List
 import numpy as np
 from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, main
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated
+from pymodaq_plugins_thorlabs.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
 
 
 # def power_covert_to_position(outputs: List[float], dt: float, stab=True):
@@ -45,8 +46,7 @@ class PIDModelOptoPower(PIDModelGeneric):
         param: (Parameter) instance of Parameter object
         """
         if param.name() == 'wavelength': # DK - correct typo
-            self.settings['wavelength'] = param.value()
-
+            self.settings['wavelength'] = DAQ_0DViewer_TLPMPowermeter.commit_settings(self.settings['wavelength'].value())
     def ini_model(self):
         super().ini_model()
 
