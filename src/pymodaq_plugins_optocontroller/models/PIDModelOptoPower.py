@@ -12,12 +12,6 @@ from pymodaq_plugins_thorlabs.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TL
 #     #TODO: No simple way to do this
 #     return outputs
 
-# Dk - Comment out
-# def some_function_to_convert_the_data(measurements: DataToExport):
-#     """ Should be replaced here or in the model class to process the measurement """
-#     a = 0
-#     b = 1
-#     return [a, b]
 
 class PIDModelOptoPower(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
