@@ -1,5 +1,3 @@
-# DK - modules in the first line are obsolete. Import classes used in PIDModelGeneric -> https://github.com/PyMoDAQ/PyMoDAQ/blob/6daca234d2ba46a09f1ccebc9e982cb1b029d9ee/src/pymodaq/extensions/pid/utils.py#L32
-# AD -> don't need to import since the class inherits from PIDModelGeneric
 from typing import List
 import numpy as np
 from pymodaq.extensions.pid.utils import PIDModelGeneric, main
@@ -9,6 +7,7 @@ from pymodaq.utils.parameter import utils
 from pymodaq_plugins_thorlabs.hardware.powermeter import CustomTLPM, DEVICE_NAMES
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
 
+<<<<<<< HEAD
 
 # def power_covert_to_position(outputs: List[float], dt: float, stab=True):
 #     """ Should be replaced here or in the model class to process the outputs """
@@ -16,6 +15,8 @@ from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPow
 #     return outputs
 
 
+=======
+>>>>>>> 0764316530737bdf0a7c7c0b48c7fc729ea744e0
 class PIDModelOptoPower(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
                   min=dict(state=False, value=-100),)
@@ -30,15 +31,11 @@ class PIDModelOptoPower(PIDModelGeneric):
     actuators_name = ['Move 00']  # names of actuator's control modules involved in the PID
     detectors_name = ['Det 00']  # names of detector's control modules involved in the PID
 
-    # Target Power will be set in setpoint. Delete this dictionary. We only need wavelength at this moment.
     params = param_power
-    # [ {'title': 'Wavelength', 'name': 'wavelength', 'type': 'float', 'value': 532}]
-
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
-        #DAQ_0DViewer_TLPMPowermeter.__init__()
-
         self.power = None
+<<<<<<< HEAD
         self.controller = None
         #self.power = DAQ_0DViewer_TLPMPowermeter()
         # self.controller = None
@@ -52,6 +49,9 @@ class PIDModelOptoPower(PIDModelGeneric):
         info = self.controller.infos.get_devices_info(index)
         self.controller.open_by_index(index)
         self.settings.child('info').setValue(str(info))
+=======
+    
+>>>>>>> 0764316530737bdf0a7c7c0b48c7fc729ea744e0
 
         self.settings.child('wavelength').setOpts(limits=self.controller.wavelength_range)
         self.controller.wavelength = self.settings.child('wavelength').value()
@@ -64,6 +64,7 @@ class PIDModelOptoPower(PIDModelGeneric):
         ----------
         param: (Parameter) instance of Parameter object
         """
+<<<<<<< HEAD
         super().update_settings(param)
         if 'wavelength' in utils.get_param_path(param):
             self.power.commit_settings(param)
@@ -74,6 +75,17 @@ class PIDModelOptoPower(PIDModelGeneric):
         self.power = DAQ_0DViewer_TLPMPowermeter()
         # self.power.ini_detector(controller = None)
        
+=======
+        if param.name() == 'wavelength':
+            controller = self.modules_manager.get_mod_from_name('Det 00').controller
+            controller.wavelength = self.settings.child('wavelength').value()
+            self.settings.child('wavelength').setValue(controller.wavelength)            
+
+    def ini_model(self):
+        super().ini_model()
+        self.power = DAQ_0DViewer_TLPMPowermeter()
+    
+>>>>>>> 0764316530737bdf0a7c7c0b48c7fc729ea744e0
     def convert_input(self, measurements: DataToExport):
         """
         Convert the measurements in the units to be fed to the PID (same dimensionality as the setpoint)
@@ -91,7 +103,7 @@ class PIDModelOptoPower(PIDModelGeneric):
         self.curr_input = [power]
         return DataToExport('inputs',
                     data=[DataCalculated(self.setpoints_names[ind],
-                                         data=[self.curr_input[ind]]) # np.array([power])
+                                         data=[self.curr_input[ind]]) 
                           for ind in range(len(self.setpoints_names))])
 
     def convert_output(self, outputs: List[float], dt: float, stab=True):
@@ -116,5 +128,4 @@ class PIDModelOptoPower(PIDModelGeneric):
                                for ind in range(len(self.curr_output))])
 
 if __name__ == '__main__':
-    # main("OptoControllerModel.xml") 
     main()
