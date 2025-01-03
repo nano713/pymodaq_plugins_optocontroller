@@ -3,6 +3,7 @@
 from typing import List
 import numpy as np
 from pymodaq.extensions.pid.utils import PIDModelGeneric, main
+from pymodaq_gui.parameter import Parameter
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 from pymodaq.utils.parameter import utils
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
@@ -48,6 +49,7 @@ class PIDModelOptoPower(PIDModelGeneric):
         ----------
         param: (Parameter) instance of Parameter object
         """
+        super().update_settings(param)
         if 'wavelength' in utils.get_param_path(param):
             DAQ_0DViewer_TLPMPowermeter.commit_settings(param)
         # if param.name() == 'wavelength': # DK - correct typo
