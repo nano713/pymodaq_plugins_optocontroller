@@ -6,6 +6,7 @@ from pymodaq.extensions.pid.utils import PIDModelGeneric, main
 from pymodaq_gui.parameter import Parameter
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 from pymodaq.utils.parameter import utils
+from pymodaq_plugins_thorlabs.hardware.powermeter import CustomTLPM, DEVICE_NAMES
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
 
 
@@ -38,9 +39,23 @@ class PIDModelOptoPower(PIDModelGeneric):
         #DAQ_0DViewer_TLPMPowermeter.__init__()
 
         self.power = None
+        self.controller = None
         #self.power = DAQ_0DViewer_TLPMPowermeter()
         # self.controller = None
         # print(f"{self.power} is initialized")
+    def controller_initialization(self):
+        """
+        Initialize the controller
+        """
+        index = DEVICE_NAMES.index(self.settings['devices'])
+        self.controller = CustomTLPM()
+        info = self.controller.infos.get_devices_info(index)
+        self.controller.open_by_index(index)
+        self.settings.child('info').setValue(str(info))
+
+        self.settings.child('wavelength').setOpts(limits=self.controller.wavelength_range)
+        self.controller.wavelength = self.settings.child('wavelength').value()
+        self.settings.child('wavelength').setValue(self.controller.wavelength)
 
     def update_settings(self, param: Parameter):
         """
@@ -51,13 +66,13 @@ class PIDModelOptoPower(PIDModelGeneric):
         """
         super().update_settings(param)
         if 'wavelength' in utils.get_param_path(param):
-            DAQ_0DViewer_TLPMPowermeter.commit_settings(param)
+            self.power.commit_settings(param)
         # if param.name() == 'wavelength': # DK - correct typo
         #     self.settings['wavelength'] = self.power.commit_settings(self.settings['wavelength'])
     def ini_model(self):
         super().ini_model()
         self.power = DAQ_0DViewer_TLPMPowermeter()
-        self.power.ini_detector(controller = None)
+        # self.power.ini_detector(controller = None)
        
     def convert_input(self, measurements: DataToExport):
         """
