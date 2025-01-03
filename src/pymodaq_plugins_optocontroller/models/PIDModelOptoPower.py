@@ -1,22 +1,10 @@
 from typing import List
 import numpy as np
 from pymodaq.extensions.pid.utils import PIDModelGeneric, main
-from pymodaq_gui.parameter import Parameter
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 from pymodaq.utils.parameter import utils
-from pymodaq_plugins_thorlabs.hardware.powermeter import CustomTLPM, DEVICE_NAMES
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
 
-<<<<<<< HEAD
-
-# def power_covert_to_position(outputs: List[float], dt: float, stab=True):
-#     """ Should be replaced here or in the model class to process the outputs """
-#     #TODO: No simple way to do this
-#     return outputs
-
-
-=======
->>>>>>> 0764316530737bdf0a7c7c0b48c7fc729ea744e0
 class PIDModelOptoPower(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
                   min=dict(state=False, value=-100),)
@@ -35,47 +23,15 @@ class PIDModelOptoPower(PIDModelGeneric):
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
         self.power = None
-<<<<<<< HEAD
-        self.controller = None
-        #self.power = DAQ_0DViewer_TLPMPowermeter()
-        # self.controller = None
-        # print(f"{self.power} is initialized")
-    def controller_initialization(self):
-        """
-        Initialize the controller
-        """
-        index = DEVICE_NAMES.index(self.settings['devices'])
-        self.controller = CustomTLPM()
-        info = self.controller.infos.get_devices_info(index)
-        self.controller.open_by_index(index)
-        self.settings.child('info').setValue(str(info))
-=======
     
->>>>>>> 0764316530737bdf0a7c7c0b48c7fc729ea744e0
 
-        self.settings.child('wavelength').setOpts(limits=self.controller.wavelength_range)
-        self.controller.wavelength = self.settings.child('wavelength').value()
-        self.settings.child('wavelength').setValue(self.controller.wavelength)
-
-    def update_settings(self, param: Parameter):
+    def update_settings(self, param):
         """
         Get a parameter instance whose value has been modified by a user on the UI
         Parameters
         ----------
         param: (Parameter) instance of Parameter object
         """
-<<<<<<< HEAD
-        super().update_settings(param)
-        if 'wavelength' in utils.get_param_path(param):
-            self.power.commit_settings(param)
-        # if param.name() == 'wavelength': # DK - correct typo
-        #     self.settings['wavelength'] = self.power.commit_settings(self.settings['wavelength'])
-    def ini_model(self):
-        super().ini_model()
-        self.power = DAQ_0DViewer_TLPMPowermeter()
-        # self.power.ini_detector(controller = None)
-       
-=======
         if param.name() == 'wavelength':
             controller = self.modules_manager.get_mod_from_name('Det 00').controller
             controller.wavelength = self.settings.child('wavelength').value()
@@ -85,7 +41,6 @@ class PIDModelOptoPower(PIDModelGeneric):
         super().ini_model()
         self.power = DAQ_0DViewer_TLPMPowermeter()
     
->>>>>>> 0764316530737bdf0a7c7c0b48c7fc729ea744e0
     def convert_input(self, measurements: DataToExport):
         """
         Convert the measurements in the units to be fed to the PID (same dimensionality as the setpoint)
