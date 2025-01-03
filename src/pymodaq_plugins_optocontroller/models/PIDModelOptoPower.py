@@ -2,6 +2,7 @@
 # AD -> don't need to import since the class inherits from PIDModelGeneric
 from typing import List
 import numpy as np
+from pymodaq_gui.parameter import Parameter
 from pymodaq.extensions.pid.utils import PIDModelGeneric, DataToActuatorPID, main
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated
 from pymodaq_plugins_thorlabs.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
@@ -32,13 +33,14 @@ class PIDModelOptoPower(PIDModelGeneric):
         super().__init__(pid_controller)
         self.power = 0
 
-    def update_settings(self, param):
+    def update_settings(self, param: Parameter):
         """
         Get a parameter instance whose value has been modified by a user on the UI
         Parameters
         ----------
         param: (Parameter) instance of Parameter object
         """
+        super().update_settings(param)
         if param.name() == 'wavelength': # DK - correct typo
             self.settings['wavelength'] = DAQ_0DViewer_TLPMPowermeter.commit_settings(self.settings['wavelength'].value())
     def ini_model(self):
