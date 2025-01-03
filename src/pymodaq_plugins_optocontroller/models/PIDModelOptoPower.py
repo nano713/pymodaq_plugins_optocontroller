@@ -5,20 +5,11 @@ import numpy as np
 from pymodaq.extensions.pid.utils import PIDModelGeneric, main
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 from pymodaq.utils.parameter import utils
+from pymodaq_plugins_thorlabs.hardware.powermeter import CustomTLPM, DEVICE_NAMES
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_0D.daq_0Dviewer_TLPMPowermeter import DAQ_0DViewer_TLPMPowermeter
 
 
-# def power_covert_to_position(outputs: List[float], dt: float, stab=True):
-#     """ Should be replaced here or in the model class to process the outputs """
-#     #TODO: No simple way to do this
-#     return outputs
 
-# Dk - Comment out
-# def some_function_to_convert_the_data(measurements: DataToExport):
-#     """ Should be replaced here or in the model class to process the measurement """
-#     a = 0
-#     b = 1
-#     return [a, b]
 
 class PIDModelOptoPower(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
@@ -40,12 +31,8 @@ class PIDModelOptoPower(PIDModelGeneric):
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
-        #DAQ_0DViewer_TLPMPowermeter.__init__()
-
         self.power = None
-        #self.power = DAQ_0DViewer_TLPMPowermeter()
-        # self.controller = None
-        # print(f"{self.power} is initialized")
+    
 
     def update_settings(self, param):
         """
@@ -54,14 +41,22 @@ class PIDModelOptoPower(PIDModelGeneric):
         ----------
         param: (Parameter) instance of Parameter object
         """
-        if 'wavelength' in utils.get_param_path(param):
-            DAQ_0DViewer_TLPMPowermeter.commit_settings(param)
+        # super().update_settings(param)
+        if param.name() == 'wavelength':
+            controller = self.modules_manager.get_mod_from_name('Det 00').controller
+            controller.wavelength = self.settings.child('wavelength').value()
+            self.settings.child('wavelength').setValue(self.controller.wavelength)            
+            
+            # self._mock_dwa = self.viewer_mock.show_data(dwa)
+
+        # if 'wavelength' in utils.get_param_path(param):
+        #     self.power.commit_settings(param)
         # if param.name() == 'wavelength': # DK - correct typo
         #     self.settings['wavelength'] = self.power.commit_settings(self.settings['wavelength'])
     def ini_model(self):
         super().ini_model()
         self.power = DAQ_0DViewer_TLPMPowermeter()
-        self.power.ini_detector(controller = None)
+        # self.power.ini_detector(controller = None)
        
     def convert_input(self, measurements: DataToExport):
         """
