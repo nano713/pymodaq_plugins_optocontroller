@@ -22,7 +22,7 @@ class PIDModelTemplate(PIDModelGeneric):
 
     Nsetpoints = 2  # number of setpoints
     setpoint_ini = [128, 128]  # number and values of initial setpoints
-    setpoints_names = ['Xaxis', 'Yaxis']  # number and names of setpoints
+    setpoints_names = ['wavelength']  # number and names of setpoints
 
     actuators_name = ["Xpiezo", "Ypiezo"]  # names of actuator's control modules involved in the PID
     detectors_name = ['Camera']  # names of detector's control modules involved in the PID
