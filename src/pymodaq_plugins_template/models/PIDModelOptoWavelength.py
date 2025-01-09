@@ -24,10 +24,13 @@ class PIDModelTemplate(PIDModelGeneric):
     setpoint_ini = [128, 128]  # number and values of initial setpoints
     setpoints_names = ['wavelength']  # number and names of setpoints
 
-    actuators_name = ["Xpiezo", "Ypiezo"]  # names of actuator's control modules involved in the PID
+    actuators_name = ["Linear", "Rotary"]  # names of actuator's control modules involved in the PID
     detectors_name = ['Camera']  # names of detector's control modules involved in the PID
 
-    params = []  # list of dict to initialize specific Parameters
+    param_zaber = 
+    param_csthorlabs = 
+
+    params = [{'title': 'Wavelength', 'name': 'wavelength', 'type': 'list', 'limits': ports, 'value': port}]
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
