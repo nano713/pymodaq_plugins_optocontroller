@@ -1,6 +1,7 @@
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
+from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_1D.daq_0Dviewer_TLPMPowermeter import DAQ_1DViewer_CCSXXX
 from pymodaq_plugins_zaber.daq_move_plugins.zaber import DAQ_Move_Zaber
 
@@ -65,9 +66,13 @@ class PIDModelTemplate(PIDModelGeneric):
         InputFromDetector: the converted input in the setpoints units
 
         """
-
-        x, y = some_function_to_convert_the_data(measurements)
-        return InputFromDetector([y, x])
+        
+        wavelength = measurements.get_data_from_dim('Data1D')[1][1]
+        self.curr_input = [wavelength]
+        return DataToExport('inputs',
+                    data=[DataCalculated(self.setpoints_names[ind],
+                                         data=[self.curr_input[ind]]) 
+                          for ind in range(len(self.setpoints_names))])
 
     def convert_output(self, outputs: List[float], dt: float, stab=True):
         """
