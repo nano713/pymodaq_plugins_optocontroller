@@ -1,6 +1,8 @@
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
+from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_1D.daq_0Dviewer_TLPMPowermeter import DAQ_1DViewer_CCSXXX
+from pymodaq_plugins_zaber.daq_move_plugins.zaber import DAQ_Move_Zaber
 
 
 def some_function_to_convert_the_pid_outputs(outputs: List[float], dt: float, stab=True):
@@ -27,10 +29,10 @@ class PIDModelTemplate(PIDModelGeneric):
     actuators_name = ["Linear", "Rotary"]  # names of actuator's control modules involved in the PID
     detectors_name = ['Camera']  # names of detector's control modules involved in the PID
 
-    param_zaber = 
-    param_csthorlabs = 
+    param_zaber = DAQ_1DViewer_CCSXXX.params
+    param_csthorlabs = DAQ_Move_Zaber.params
 
-    params = [{'title': 'Wavelength', 'name': 'wavelength', 'type': 'list', 'limits': ports, 'value': port}]
+    params = param_zaber + param_csthorlabs
 
     def __init__(self, pid_controller):
         super().__init__(pid_controller)
