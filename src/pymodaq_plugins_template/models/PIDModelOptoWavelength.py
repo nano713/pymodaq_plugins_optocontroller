@@ -1,6 +1,7 @@
 from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
 from pymodaq.utils.data import DataToExport
 from typing import List
+import numpy as np
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
 from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_1D.daq_0Dviewer_TLPMPowermeter import DAQ_1DViewer_CCSXXX
 from pymodaq_plugins_zaber.daq_move_plugins.zaber import DAQ_Move_Zaber
@@ -92,8 +93,10 @@ class PIDModelTemplate(PIDModelGeneric):
         OutputToActuator: the converted output
 
         """
-        outputs = some_function_to_convert_the_pid_outputs(outputs, dt, stab)
-        return OutputToActuator(mode='rel', values=outputs)
+        self.curr_output = np.array(outputs)
+        return DataToActuators('pid', mode='rel',
+                         data=[DataActuator(self.actuators_name[ind], data=[self.curr_output])
+                               for ind in range(len(self.curr_output))])
 
 
 if __name__ == '__main__':
