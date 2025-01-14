@@ -46,9 +46,9 @@ class PIDModelTemplate(PIDModelGeneric):
         param: (Parameter) instance of Parameter object
         """
         if param.name() == 'integration_time':
-            controller = self.modules_manager.get_mod_from_name('Det 00').controller
-            controller.wavelength = self.settings.child('wavelength').value()
-            self.settings.child('wavelength').setValue(controller.wavelength)  
+            controller = self.modules_manager.get_mod_from_name('Det 01').controller
+            controller.time = self.settings.child('integration_time').value()
+            self.settings.child('integration_time').setValue(controller.time)  
 
     def ini_model(self):
         super().ini_model()
