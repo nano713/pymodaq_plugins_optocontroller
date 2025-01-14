@@ -27,8 +27,8 @@ class PIDModelTemplate(PIDModelGeneric):
     setpoint_ini = [128, 128]  # number and values of initial setpoints
     setpoints_names = ['wavelength']  # number and names of setpoints
 
-    actuators_name = ["Linear", "Rotary"]  # names of actuator's control modules involved in the PID
-    detectors_name = ['Camera']  # names of detector's control modules involved in the PID
+    actuators_name = ["Move 00"]  # names of actuator's control modules involved in the PID
+    detectors_name = ['Det 01']  # names of detector's control modules involved in the PID
 
     param_zaber = DAQ_1DViewer_CCSXXX.params
     param_csthorlabs = DAQ_Move_Zaber.params
@@ -45,8 +45,10 @@ class PIDModelTemplate(PIDModelGeneric):
         ----------
         param: (Parameter) instance of Parameter object
         """
-        if param.name() == '':
-            pass
+        if param.name() == 'integration_time':
+            controller = self.modules_manager.get_mod_from_name('Det 00').controller
+            controller.wavelength = self.settings.child('wavelength').value()
+            self.settings.child('wavelength').setValue(controller.wavelength)  
 
     def ini_model(self):
         super().ini_model()
@@ -66,7 +68,7 @@ class PIDModelTemplate(PIDModelGeneric):
         InputFromDetector: the converted input in the setpoints units
 
         """
-        
+
         wavelength = measurements.get_data_from_dim('Data1D')[1][1]
         self.curr_input = [wavelength]
         return DataToExport('inputs',
