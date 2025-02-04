@@ -1,10 +1,10 @@
-from pymodaq.extensions.pid.utils import PIDModelGeneric, OutputToActuator, InputFromDetector, main
+from pymodaq.extensions.pid.utils import PIDModelGeneric, main
 from pymodaq.utils.data import DataToExport
 from typing import List
 import numpy as np
 from pymodaq.utils.data import DataActuator, DataToExport, DataCalculated, DataToActuators
-from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_1D.daq_0Dviewer_TLPMPowermeter import DAQ_1DViewer_CCSXXX
-from pymodaq_plugins_zaber.daq_move_plugins.zaber import DAQ_Move_Zaber
+from pymodaq_plugins_thorlabs.daq_viewer_plugins.plugins_1D.daq_1Dviewer_CCSXXX import DAQ_1DViewer_CCSXXX
+from pymodaq_plugins_zaber.daq_move_plugins.daq_move_Zaber import DAQ_Move_Zaber
 
 
 def some_function_to_convert_the_pid_outputs(outputs: List[float], dt: float, stab=True):
@@ -19,13 +19,13 @@ def some_function_to_convert_the_data(measurements: DataToExport):
     return [a, b]
 
 
-class PIDModelTemplate(PIDModelGeneric):
+class PIDModelOptoWave(PIDModelGeneric):
     limits = dict(max=dict(state=False, value=100),
                   min=dict(state=False, value=-100),)
     konstants = dict(kp=0.1, ki=0.000, kd=0.0000)
 
-    Nsetpoints = 2  # number of setpoints
-    setpoint_ini = [128, 128]  # number and values of initial setpoints
+    Nsetpoints = 1  # number of setpoints
+    setpoint_ini = [128]  # number and values of initial setpoints
     setpoints_names = ['wavelength']  # number and names of setpoints
 
     actuators_name = ["Move 00"]  # names of actuator's control modules involved in the PID
@@ -70,7 +70,16 @@ class PIDModelTemplate(PIDModelGeneric):
 
         """
 
-        wavelength = measurements.get_data_from_dim('Data1D')[1][1]
+        wavelength = measurements.get_data_from_dim('Data1D')[0][0] # <- we get an intensity 1D array from this method
+        """
+        wavelength (1D array) <- 
+        intensity (1D array)
+
+        Apply Lorentzian fit to intensity vs. wavelength to extract the peak center_wavelength
+
+        data = [center_wavelength] in DataToExport
+        """
+
         self.curr_input = [wavelength]
         return DataToExport('inputs',
                     data=[DataCalculated(self.setpoints_names[ind],
